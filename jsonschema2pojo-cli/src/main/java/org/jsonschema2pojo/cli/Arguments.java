@@ -138,6 +138,9 @@ public class Arguments implements GenerationConfig {
     @Parameter(names = { "-dda", "--disable-dynamic-accessors" }, description = "Disable dynamic getter, setter, and builder support on generated types.")
     private boolean disableDynamicAccessors = false;
 
+    @Parameter(names = { "-jb", "--json-binding" }, description = "The file from which JSON bindings will be read", converter = UrlConverter.class)
+    private URL bindingPaths;
+    
     private static final int EXIT_OKAY = 0;
     private static final int EXIT_ERROR = 1;
 
@@ -335,6 +338,11 @@ public class Arguments implements GenerationConfig {
     @Override
     public boolean isIncludeDynamicAccessors() {
         return !disableDynamicAccessors;
+    }
+    
+    @Override
+    public URL getBinding() {
+        return bindingPaths;
     }
 
 }

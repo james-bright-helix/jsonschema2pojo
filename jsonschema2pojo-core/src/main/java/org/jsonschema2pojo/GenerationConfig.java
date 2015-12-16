@@ -317,5 +317,12 @@ public interface GenerationConfig {
      *         or to omit these methods.
      */
     boolean isIncludeDynamicAccessors();
+    
+    /**
+     * Gets the 'binding' configuration option.
+     *
+     * @return The file from which JSON Schema bindings will be read.
+     */
+    URL getBinding();
 
 }

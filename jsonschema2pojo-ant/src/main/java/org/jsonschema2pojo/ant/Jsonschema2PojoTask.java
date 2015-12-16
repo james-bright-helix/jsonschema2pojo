@@ -124,6 +124,8 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     private String targetVersion = "1.6";
 
     private boolean includeDynamicAccessors = true;
+    
+    private String binding;
 
     /**
      * Execute this task (it's expected that all relevant setters will have been
@@ -571,6 +573,18 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     public void setIncludeDynamicAccessors(boolean includeDynamicAccessors) {
         this.includeDynamicAccessors = includeDynamicAccessors;
     }
+    
+    /**
+     * Sets binding file (or directory containing binding files) that should be
+     * used for input.
+     *
+     * @param source
+     *            Location of the binding file(s). Note: this may refer to a
+     *            single file or a directory of files.
+     */
+    public void setBinding(String binding) {
+        this.binding = binding;
+    }
 
     @Override
     public boolean isGenerateBuilders() {
@@ -762,5 +776,10 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     @Override
     public boolean isIncludeDynamicAccessors() {
         return includeDynamicAccessors;
+    }
+    
+    @Override
+    public URL getBinding() {
+        return binding != null ? URLUtil.parseURL(binding) : null;
     }
 }

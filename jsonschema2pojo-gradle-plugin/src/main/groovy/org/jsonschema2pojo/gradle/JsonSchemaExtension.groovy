@@ -62,6 +62,7 @@ public class JsonSchemaExtension implements GenerationConfig {
   boolean useLongIntegers
   boolean usePrimitives
   FileFilter fileFilter
+  File bindingFile
 
   public JsonSchemaExtension() {
     // See DefaultGenerationConfig
@@ -127,6 +128,11 @@ public class JsonSchemaExtension implements GenerationConfig {
   public void setSourceType(String s) {
     sourceType = SourceType.valueOf(s.toUpperCase())
   }
+  
+  @Override
+  public URL getBinding() {
+    bindingFile?.toURI()?.toURL()
+  }
 
   @Override
   public String toString() {
@@ -158,6 +164,7 @@ public class JsonSchemaExtension implements GenerationConfig {
        |classNameSuffix = ${classNameSuffix}
        |targetVersion = ${targetVersion}
        |includeDynamicAccessors = ${includeDynamicAccessors}
+       |binding = ${binding}
      """.stripMargin()
   }
 }

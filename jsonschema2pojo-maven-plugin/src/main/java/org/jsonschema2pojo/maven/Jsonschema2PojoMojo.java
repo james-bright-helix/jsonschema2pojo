@@ -454,6 +454,14 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     private boolean includeDynamicAccessors = true;
 
     /**
+     * Location of the JSON binding file.
+     *
+     * @parameter expression="${jsonschema2pojo.binding}"
+     * @since 0.4.18
+     */
+    private String binding;
+
+    /**
      * The project being built.
      *
      * @parameter expression="${project}"
@@ -529,6 +537,10 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
             project.addCompileSourceRoot(outputDirectory.getPath());
         }
 
+        if (binding != null) {
+            getLog().info("Using binding: " + binding);
+        }
+        
         try {
             Jsonschema2Pojo.generate(this);
         } catch (IOException e) {
@@ -748,5 +760,9 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     public boolean isIncludeDynamicAccessors() {
         return includeDynamicAccessors;
     }
-
+    
+    @Override
+    public URL getBinding() {
+    	return binding != null ? URLUtil.parseURL(binding) : null;
+    }
 }

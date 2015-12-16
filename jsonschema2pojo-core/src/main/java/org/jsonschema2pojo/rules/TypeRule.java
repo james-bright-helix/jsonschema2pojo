@@ -81,7 +81,10 @@ public class TypeRule implements Rule<JClassContainer, JType> {
 
         String propertyTypeName = getTypeName(node);
 
-        JType type;
+        JType type = ruleFactory.getBindingRule().apply(nodeName, node, jClassContainer, schema);
+        if(null != type){
+            return type;
+        }
 
         if (propertyTypeName.equals("object") || (node.has("properties") && node.path("properties").size() > 0)) {
 

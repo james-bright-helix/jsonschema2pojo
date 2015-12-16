@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.jsonschema2pojo.BindingStore;
 import org.jsonschema2pojo.DefaultGenerationConfig;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
@@ -47,7 +48,7 @@ public class Example {
             }
         };
 
-        SchemaMapper mapper = new SchemaMapper(new RuleFactory(config, new Jackson2Annotator(), new SchemaStore()), new SchemaGenerator());
+        SchemaMapper mapper = new SchemaMapper(new RuleFactory(config, new Jackson2Annotator(), new SchemaStore(), new BindingStore()), new SchemaGenerator());
         mapper.generate(codeModel, "ClassName", "com.example", source);
 
         codeModel.build(new File("output"));

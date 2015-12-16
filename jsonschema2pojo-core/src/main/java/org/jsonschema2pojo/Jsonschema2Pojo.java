@@ -57,6 +57,7 @@ public class Jsonschema2Pojo {
 
         ruleFactory.setAnnotator(annotator);
         ruleFactory.setGenerationConfig(config);
+        ruleFactory.setBindingStore(new BindingStore(config));
 
         SchemaMapper mapper = new SchemaMapper(ruleFactory, new SchemaGenerator());
 

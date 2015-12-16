@@ -33,6 +33,7 @@ import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Schema;
 
 import com.sun.codemodel.JClass;
+import com.sun.codemodel.JClassContainer;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
@@ -42,12 +43,15 @@ public class TypeRuleTest {
 
     private GenerationConfig config = mock(GenerationConfig.class);
     private RuleFactory ruleFactory = mock(RuleFactory.class);
+    @SuppressWarnings("unchecked")
+    private Rule<JClassContainer, JType> bindingRule = mock(Rule.class);
 
     private TypeRule rule = new TypeRule(ruleFactory);
 
     @Before
     public void wireUpConfig() {
         when(ruleFactory.getGenerationConfig()).thenReturn(config);
+        when(ruleFactory.getBindingRule()).thenReturn(bindingRule);
     }
 
     @Test
@@ -541,6 +545,19 @@ public class TypeRuleTest {
         JType result = rule.apply("fooBar", objectNode, jpackage, null);
 
         assertThat(result.fullName(), is(Object.class.getName()));
+    }
+
+    @Test
+    public void applyUsesBindingIfPresent() {
+        String nodeName = "fooBar";
+        ObjectNode objectNode = new ObjectMapper().createObjectNode();
+        JPackage jpackage = new JCodeModel()._package(getClass().getPackage().getName());
+        JType bindingResult = jpackage.owner().ref(TypeRuleTest.class);
+        when(bindingRule.apply(nodeName, objectNode, jpackage, null)).thenReturn(bindingResult);
+
+        JType result = rule.apply("fooBar", objectNode, jpackage, null);
+
+        assertThat(result.fullName(), is(TypeRuleTest.class.getName()));
     }
 
 }
